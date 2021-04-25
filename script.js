@@ -1,17 +1,25 @@
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
-const width = canvas.width = window.innerWidth;
-const height = canvas.height = window.innerHeight;
+let width = canvas.width = window.innerWidth;
+let height = canvas.height = window.innerHeight;
 
 let center = { x: width / 2, y: height / 2 };
 const orbitColor = 'rgba(100,100,100,0.1)';
 
-let i = 0;
-draw();
-function draw() {
-  i %= 360;
+window.onresize = () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  width = window.innerWidth;
+  height = window.innerHeight;
 
+  center = { x: width / 2, y: height / 2 };
+};
+
+let i = 0;
+(function draw() {
+  i %= 360;
+  
   ctx.save();
   ctx.fillStyle = 'rgba(0,0,0,0.2)';
   ctx.fillRect(0, 0, width, height);
@@ -44,7 +52,7 @@ function draw() {
   ctx.restore();
   ctx.save();
   ctx.rotate(Math.PI / 180 * (i * 2));
-
+  
   // Terra
   ctx.fillStyle = 'blue';
   ctx.strokeStyle = orbitColor;
@@ -53,19 +61,19 @@ function draw() {
   
   ctx.restore();
   ctx.rotate(Math.PI / 180 * i);
-
+  
   // Marte
   ctx.fillStyle = 'tomato';
   ctx.strokeStyle = orbitColor;
   strokeCircle(0, 0, 342);
   fillCircle(0, -342, 3.5);
-
+  
   ctx.restore();
-
+  
   i++;
-
+  
   requestAnimationFrame(draw);
-}
+}) ();
 
 function fillCircle(x, y, radius) {
   ctx.beginPath();
